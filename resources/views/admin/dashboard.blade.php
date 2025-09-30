@@ -20,6 +20,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Description</th>
+                    <th>Duration (mins)</th>
                     <th>Created At</th>
                     <th>Unique Link</th>
                     <th>Actions</th>
@@ -30,10 +31,12 @@
                     <tr>
                         <td>{{ $exam->title }}</td>
                         <td>{{ $exam->description }}</td>
+                        <td>{{ $exam->duration ?? 'N/A' }}</td>  <!-- Show N/A for old exams if null -->
                         <td>{{ $exam->created_at->format('Y-m-d H:i') }}</td>
                         <td>
                             {{ route('exam.register', ['uuid' => $exam->uuid]) }}
                         </td>
+                        
                         <td>
                             <button onclick="copyLink('{{ route('exam.register', ['uuid' => $exam->uuid]) }}')">Copy Link</button>
                         </td>

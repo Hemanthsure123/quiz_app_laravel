@@ -12,6 +12,7 @@
         @csrf
         <label>Title:</label><input type="text" name="title" required><br>
         <label>Description:</label><textarea name="description" required></textarea><br>
+        <label>Duration (in minutes):</label><input type="number" name="duration" required min="1"><br>
         <button type="submit">Create Exam and Generate Link</button>
     </form>
 </body>

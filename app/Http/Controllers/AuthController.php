@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use App\Models\ProctorRecord;
 
 class AuthController extends Controller
 {
@@ -108,4 +110,36 @@ class AuthController extends Controller
         $exam = \App\Models\Exam::findOrFail($examId);
         return view('dashboard', ['exam' => $exam]);  // Pass exam to view
     }
+
+
+    public function uploadProctorVideos(Request $request)
+{
+    $user = Auth::user();
+    $examId = Session::get('exam_id');  // From earlier
+
+    // Validate files
+    $request->validate([
+        'camera_video' => 'required|file|mimes:webm,mp4|max:102400',  // 100MB max
+        'screen_video' => 'required|file|mimes:webm,mp4|max:102400',
+    ]);
+
+    // Store camera video
+    $cameraPath = $request->file('camera_video')->store('videos', 'public');
+
+    // Store screen video
+    $screenPath = $request->file('screen_video')->store('videos', 'public');
+
+    // Save to DB
+    ProctorRecord::create([
+        'user_id' => $user->id,
+        'exam_id' => $examId,
+        'camera_video_path' => $cameraPath,
+        'screen_video_path' => $screenPath,
+    ]);
+
+    // Clear exam session
+    Session::forget('exam_id');
+
+    return response()->json(['success' => true, 'message' => 'Videos uploaded successfully!']);
+}
 }

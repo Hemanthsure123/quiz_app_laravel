@@ -23,20 +23,20 @@ class ExamController extends Controller
 
     // Store new exam and generate link
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'duration' => 'required|integer|min:1',  // Ensure it's a positive number
+    ]);
 
-        $exam = Exam::create([
-            'title' => $request->title,
-            'description' => $request->description,
-        ]);
+    $exam = Exam::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'duration' => $request->duration,
+    ]);
 
-        // Generate unique link
-        // ... (after $exam = Exam::create(...))
-        $link = route('exam.register', ['uuid' => $exam->uuid]);
-        return redirect()->route('admin.dashboard')->with('success', 'Exam created! Link: ' . $link);
-    }
+    $link = route('exam.register', ['uuid' => $exam->uuid]);
+    return redirect()->route('admin.dashboard')->with('success', 'Exam created! Link: ' . $link);
+}
 }

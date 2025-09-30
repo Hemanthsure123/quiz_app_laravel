@@ -25,4 +25,9 @@ Route::get('/admin/exams/create', [ExamController::class, 'create'])->name('exam
 Route::post('/admin/exams', [ExamController::class, 'store'])->name('exams.store');
 
 // User exam access route (via UUID link)
-Route::get('/exam/{uuid}', [AuthController::class, 'showRegisterFormWithExam'])->name('exam.register');  // Modified register
+Route::get('/exam/{uuid}', [AuthController::class, 'showRegisterFormWithExam'])->name('exam.register'); 
+
+
+Route::post('/upload-proctor-videos', [AuthController::class, 'uploadProctorVideos'])
+    ->name('upload.proctor.videos')
+    ->middleware('auth');

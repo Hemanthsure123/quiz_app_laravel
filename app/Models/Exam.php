@@ -10,7 +10,7 @@ class Exam extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description'];
+    protected $fillable = ['title', 'description', 'duration'];
 
     protected static function booted()
     {
